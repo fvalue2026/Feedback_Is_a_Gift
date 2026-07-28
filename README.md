@@ -1,5 +1,5 @@
-# Value Friends | أصدقاء قيمة
+# Feedback Is a Gift | أصدقاء قيمة
 
 لعبة تقدير وشكر تفاعلية لموظفي قيمة المالية — عجلة دوارة تختار زميلاً، ويرسل له الموظف رسالة تقدير تظهر على الشاشة.
 
-🔗 الصفحة: https://fvalue2026.github.io/value-friends/
+🔗 الصفحة: https://fvalue2026.github.io/Feedback_Is_a_Gift/
