@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أرسل رسالة | أصدقاء قيمة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --p950:#180a30; --p900:#2c1458; --p800:#442182; --p700:#5a34a0;
+    --p600:#7048b8; --p500:#8b6dc7; --p400:#a68ddb; --p300:#c3b0e8; --p150:#e3d9f5;
+    --p100:#ece5f8; --p50:#f8f5fd; --ink:#20123f; --muted:#8479a0;
+    --shadow-card: 0 14px 34px -18px rgba(44,20,88,.28);
+    --shadow-lift: 0 6px 14px -6px rgba(44,20,88,.2);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{ font-family:'Tajawal', sans-serif; color:var(--ink); min-height:100vh; }
+  body{
+    background:
+      radial-gradient(500px 380px at 20% -5%, rgba(196,176,232,.6), transparent 60%),
+      radial-gradient(500px 380px at 90% 8%, rgba(112,72,184,.28), transparent 55%),
+      #fbfaff;
+    display:flex; justify-content:center;
+  }
+  .en{ font-family:'Fredoka', sans-serif; }
+  button, textarea, select{ font-family:inherit; }
+  button{ cursor:pointer; border:none; background:none; }
+  :focus-visible{ outline:3px solid var(--p600); outline-offset:3px; }
+
+  .screen{ width:100%; max-width:460px; padding:26px 20px 40px; display:flex; flex-direction:column; gap:16px; }
+
+  .brand{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:4px; }
+  .brand-badge{
+    width:34px; height:34px; border-radius:11px;
+    background:linear-gradient(150deg, var(--p600), var(--p900));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:700; font-size:16px; font-family:'Fredoka',sans-serif;
+  }
+  .brand span{ font-weight:800; font-size:13px; color:var(--p900); }
+
+  .panel{
+    background:#fff; border-radius:22px; border:1px solid var(--p150);
+    box-shadow: var(--shadow-card); padding:24px 22px;
+  }
+
+  .to-card{ text-align:center; display:flex; flex-direction:column; gap:6px; }
+  .to-label{ font-size:11.5px; color:var(--muted); font-weight:700; }
+  .to-name{ font-size:26px; font-weight:800; color:var(--p900); }
+  .to-swap{
+    margin-top:8px; font-size:11.5px; color:var(--p700); font-weight:700;
+    text-decoration:underline; align-self:center;
+  }
+  .to-select{
+    width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--p150);
+    background:var(--p50); font-size:14px; color:var(--ink); font-weight:700; text-align:center;
+  }
+
+  .compose h3{ font-size:14px; font-weight:800; color:var(--p900); margin-bottom:14px; }
+  .textarea-wrap{ position:relative; }
+  textarea{
+    width:100%; min-height:130px; resize:vertical; border-radius:14px; border:1px solid var(--p150);
+    background:var(--p50); padding:14px; font-size:13.5px; line-height:1.8; color:var(--ink);
+  }
+  .char-count{ position:absolute; bottom:10px; left:14px; font-size:10.5px; color:var(--muted); }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .chip{
+    background:var(--p50); border:1px solid var(--p150); border-radius:999px;
+    padding:8px 13px; font-size:11.5px; color:var(--p800); font-weight:700;
+  }
+  .chip:active{ background:var(--p100); }
+
+  .consent{
+    display:flex; align-items:flex-start; gap:10px; margin-top:16px;
+    background:var(--p50); border-radius:12px; padding:12px 14px; border:1px solid var(--p150);
+  }
+  .consent input{ margin-top:3px; width:16px; height:16px; accent-color: var(--p800); flex-shrink:0; }
+  .consent label{ font-size:11.5px; color:var(--ink); line-height:1.7; }
+
+  .send-btn{
+    width:100%; margin-top:16px; padding:15px; border-radius:14px;
+    background:linear-gradient(135deg, var(--p700), var(--p900)); color:#fff;
+    font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; gap:8px;
+    box-shadow: 0 12px 24px -10px rgba(44,20,88,.55);
+    transition: opacity .15s ease, transform .1s ease;
+  }
+  .send-btn:disabled{ opacity:.45; cursor:not-allowed; }
+  .send-btn:active:not(:disabled){ transform:scale(.98); }
+
+  .status{ text-align:center; font-size:12px; color:var(--muted); min-height:16px; }
+  .status.err{ color:#c0392b; }
+
+  .success{ display:none; flex-direction:column; align-items:center; gap:14px; text-align:center; padding:20px 10px; }
+  .success .emoji{ font-size:44px; }
+  .success h2{ font-size:19px; font-weight:800; color:var(--p900); }
+  .success p{ font-size:13px; color:var(--muted); line-height:1.7; max-width:28ch; }
+  .success .again{
+    margin-top:8px; padding:11px 20px; border-radius:12px; background:var(--p50);
+    border:1px solid var(--p150); color:var(--p900); font-weight:700; font-size:12.5px;
+  }
+</style>
+</head>
+<body>
+<div class="screen">
+  <div class="brand">
+    <div class="brand-badge">V</div>
+    <span>أصدقاء قيمة</span>
+  </div>
+
+  <div id="formView">
+    <div class="panel to-card" style="margin-bottom:16px;">
+      <div class="to-label">رسالة تقدير إلى</div>
+      <div class="to-name" id="toName">—</div>
+      <select class="to-select" id="toSelect" style="display:none; margin-top:10px;"></select>
+      <button class="to-swap" id="toSwapBtn" style="display:none;">تغيير الشخص</button>
+    </div>
+
+    <div class="panel compose">
+      <h3>اكتب رسالتك ✨</h3>
+      <div class="textarea-wrap">
+        <textarea id="msgBody" maxlength="300" placeholder="اكتب رسالتك هنا..."></textarea>
+        <div class="char-count"><span id="charCount">0</span>/300</div>
+      </div>
+      <div class="chips">
+        <button class="chip" data-text="أكثر شيء أقدره فيك...">أكثر شيء أقدره فيك...</button>
+        <button class="chip" data-text="شيء تتفوق فيه بشكل رائع...">شيء تتفوق فيه رائع...</button>
+        <button class="chip" data-text="تأثيرك الإيجابي على الفريق...">تأثيرك على الفريق...</button>
+        <button class="chip" data-text="رسالة لطيفة أردت أن أخبرك إياها...">رسالة أردت أخبرك إياها...</button>
+      </div>
+
+      <div class="consent">
+        <input type="checkbox" id="consentBox">
+        <label for="consentBox">أوافق على نشر هذه الرسالة على الشاشة المشتركة أمام الجميع.</label>
+      </div>
+
+      <button class="send-btn" id="sendBtn" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+        موافقة ونشر
+      </button>
+      <div class="status" id="statusMsg"></div>
+    </div>
+  </div>
+
+  <div class="panel success" id="successView">
+    <div class="emoji">💜</div>
+    <h2>تم إرسال رسالتك!</h2>
+    <p>رسالتك بطريقها للظهور على الشاشة المشتركة. شكرًا لنشر الإيجابية اليوم.</p>
+    <button class="again" id="againBtn">إرسال رسالة لشخص آخر</button>
+  </div>
+</div>
+
+<script>
+/* Must match the SCRIPT_URL used in index.html */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0a8P8a26oIVvm9VMP5NyfwME5Excic0Oi7MynJopuLBm_9Bwhk0UhsNEv7lbVB3A7aQ/exec";
+const isConfigured = () => SCRIPT_URL && !SCRIPT_URL.includes("PASTE_YOUR");
+
+const NAMES = ["أحمد","سارة","محمد","نورة","خالد","ريم","فاطمة","ياسر","أمل","ماجد","هنوف","دانة"];
+
+const params = new URLSearchParams(location.search);
+let recipient = params.get('to') || "";
+
+const toNameEl = document.getElementById('toName');
+const toSelect = document.getElementById('toSelect');
+const toSwapBtn = document.getElementById('toSwapBtn');
+
+function renderRecipient(){
+  if(recipient){
+    toNameEl.textContent = recipient;
+    toNameEl.style.display = "block";
+    toSelect.style.display = "none";
+    toSwapBtn.style.display = "inline-block";
+    toSwapBtn.textContent = "تغيير الشخص";
+  } else {
+    toNameEl.style.display = "none";
+    toSelect.style.display = "block";
+    toSwapBtn.style.display = "none";
+    toSelect.innerHTML = `<option value="">اختر الشخص...</option>` +
+      NAMES.map(n => `<option value="${n}">${n}</option>`).join("");
+  }
+  updateSendState();
+}
+toSelect.addEventListener('change', () => { recipient = toSelect.value; updateSendState(); });
+toSwapBtn.addEventListener('click', () => { recipient = ""; renderRecipient(); });
+renderRecipient();
+
+const msgBody = document.getElementById('msgBody');
+const charCount = document.getElementById('charCount');
+msgBody.addEventListener('input', () => {
+  charCount.textContent = msgBody.value.length;
+  updateSendState();
+});
+
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    msgBody.value = chip.dataset.text + " ";
+    msgBody.focus();
+    charCount.textContent = msgBody.value.length;
+    updateSendState();
+  });
+});
+
+const consentBox = document.getElementById('consentBox');
+const sendBtn = document.getElementById('sendBtn');
+consentBox.addEventListener('change', updateSendState);
+
+function updateSendState(){
+  const ok = recipient && msgBody.value.trim().length >= 3 && consentBox.checked;
+  sendBtn.disabled = !ok;
+}
+
+const statusMsg = document.getElementById('statusMsg');
+sendBtn.addEventListener('click', async () => {
+  if(!isConfigured()){
+    statusMsg.textContent = "الربط بقاعدة البيانات لسا ما تفعّل — تواصلي مع فريق الموارد البشرية.";
+    statusMsg.classList.add('err');
+    return;
+  }
+  sendBtn.disabled = true;
+  statusMsg.classList.remove('err');
+  statusMsg.textContent = "جاري الإرسال...";
+  const url = SCRIPT_URL + "?action=submit"
+    + "&to=" + encodeURIComponent(recipient)
+    + "&body=" + encodeURIComponent(msgBody.value.trim());
+  try{
+    const res = await fetch(url);
+    const data = await res.json();
+    if(data.status === "ok"){
+      document.getElementById('formView').style.display = "none";
+      document.getElementById('successView').style.display = "flex";
+    } else {
+      throw new Error("bad response");
+    }
+  }catch(err){
+    statusMsg.textContent = "صار خطأ بالإرسال، حاول مرة ثانية.";
+    statusMsg.classList.add('err');
+    sendBtn.disabled = false;
+  }
+});
+
+document.getElementById('againBtn').addEventListener('click', () => {
+  msgBody.value = ""; charCount.textContent = "0"; consentBox.checked = false;
+  recipient = params.get('to') || "";
+  renderRecipient();
+  document.getElementById('successView').style.display = "none";
+  document.getElementById('formView').style.display = "block";
+  statusMsg.textContent = "";
+});
+</script>
+</body>
+</html>
