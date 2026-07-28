@@ -311,7 +311,7 @@ async function pollSpin(){
 }
 if(isConfigured()){
   pollSpin();
-  setInterval(pollSpin, 1500);
+  setInterval(pollSpin, 600);
 } else {
   document.getElementById('waitSub').textContent = "الربط بقاعدة البيانات لسا ما تفعّل.";
 }
