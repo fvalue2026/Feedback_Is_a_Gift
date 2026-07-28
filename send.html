@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>أرسل رسالة | أصدقاء قيمة</title>
+<title>أصدقاء قيمة | Value Friends</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -28,38 +28,76 @@
   button{ cursor:pointer; border:none; background:none; }
   :focus-visible{ outline:3px solid var(--p600); outline-offset:3px; }
 
-  .screen{ width:100%; max-width:460px; padding:26px 20px 40px; display:flex; flex-direction:column; gap:16px; }
+  .screen{ width:100%; max-width:460px; padding:22px 18px 40px; display:flex; flex-direction:column; gap:16px; }
 
-  .brand{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:4px; }
+  .brand{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:2px; }
   .brand-badge{
-    width:34px; height:34px; border-radius:11px;
+    width:32px; height:32px; border-radius:10px;
     background:linear-gradient(150deg, var(--p600), var(--p900));
     display:flex; align-items:center; justify-content:center;
-    color:#fff; font-weight:700; font-size:16px; font-family:'Fredoka',sans-serif;
+    color:#fff; font-weight:700; font-size:15px; font-family:'Fredoka',sans-serif;
   }
-  .brand span{ font-weight:800; font-size:13px; color:var(--p900); }
+  .brand span{ font-weight:800; font-size:12.5px; color:var(--p900); }
 
   .panel{
     background:#fff; border-radius:22px; border:1px solid var(--p150);
-    box-shadow: var(--shadow-card); padding:24px 22px;
+    box-shadow: var(--shadow-card); padding:22px 20px;
   }
 
+  #waitView{ display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; }
+  .wait-title{ font-weight:800; font-size:15px; color:var(--p900); }
+  .wait-sub{ font-size:12px; color:var(--muted); line-height:1.7; }
+  .pulse-dot{
+    width:10px; height:10px; border-radius:50%; background:var(--p600);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{ opacity:.3; transform:scale(.8);} 50%{ opacity:1; transform:scale(1.15);} }
+
+  .wheel-holder{ position:relative; width:min(230px, 68vw); aspect-ratio:1/1; margin:6px 0; }
+  .wheel-shadow{
+    position:absolute; left:50%; bottom:-14px; width:78%; height:18px; transform:translateX(-50%);
+    background:radial-gradient(ellipse at center, rgba(44,20,88,.35), transparent 72%); filter:blur(4px);
+  }
+  .pointer{ position:absolute; top:-14px; left:50%; transform:translateX(-50%) scale(.7); z-index:8;
+    filter: drop-shadow(0 6px 6px rgba(24,10,48,.35)); }
+  .rim{
+    position:absolute; inset:-7px; border-radius:50%; z-index:1;
+    background: conic-gradient(from 0deg, var(--p300), var(--p600) 15%, var(--p300) 30%, var(--p700) 45%, var(--p300) 60%, var(--p600) 75%, var(--p300) 90%, var(--p600) 100%);
+    box-shadow: 0 14px 30px -14px rgba(24,10,48,.55), inset 0 2px 4px rgba(255,255,255,.5), inset 0 -6px 10px rgba(24,10,48,.3);
+  }
+  .wheel{
+    position:absolute; inset:6px; border-radius:50%; z-index:3;
+    box-shadow: inset 0 0 0 3px #fff, inset 0 0 0 4px var(--p150);
+    transition: transform 5s cubic-bezier(.12,.78,.1,1);
+    will-change:transform; overflow:hidden;
+  }
+  .wheel svg{ width:100%; height:100%; display:block; }
+  .wheel-gloss{
+    position:absolute; inset:6px; border-radius:50%; z-index:5; pointer-events:none;
+    background: radial-gradient(circle at 32% 22%, rgba(255,255,255,.55), rgba(255,255,255,0) 45%);
+    mix-blend-mode: screen;
+  }
+  .wheel-hub{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:9;
+    width:26%; height:26%; border-radius:50%;
+    background: radial-gradient(circle at 35% 28%, #ffffff, var(--p50) 45%, var(--p150) 100%);
+    box-shadow: 0 8px 16px -6px rgba(24,10,48,.45), inset 0 2px 3px rgba(255,255,255,.9), inset 0 -4px 8px rgba(139,109,199,.35);
+    border:1px solid var(--p150);
+    display:flex; align-items:center; justify-content:center; font-size:16px;
+  }
+
+  .confetti-layer{ position:absolute; inset:-40px; pointer-events:none; z-index:10; overflow:visible; }
+  .confetti-piece{ position:absolute; opacity:0; }
+
+  #formView{ display:none; flex-direction:column; gap:16px; }
   .to-card{ text-align:center; display:flex; flex-direction:column; gap:6px; }
   .to-label{ font-size:11.5px; color:var(--muted); font-weight:700; }
-  .to-name{ font-size:26px; font-weight:800; color:var(--p900); }
-  .to-swap{
-    margin-top:8px; font-size:11.5px; color:var(--p700); font-weight:700;
-    text-decoration:underline; align-self:center;
-  }
-  .to-select{
-    width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--p150);
-    background:var(--p50); font-size:14px; color:var(--ink); font-weight:700; text-align:center;
-  }
+  .to-name{ font-size:24px; font-weight:800; color:var(--p900); }
 
   .compose h3{ font-size:14px; font-weight:800; color:var(--p900); margin-bottom:14px; }
   .textarea-wrap{ position:relative; }
   textarea{
-    width:100%; min-height:130px; resize:vertical; border-radius:14px; border:1px solid var(--p150);
+    width:100%; min-height:120px; resize:vertical; border-radius:14px; border:1px solid var(--p150);
     background:var(--p50); padding:14px; font-size:13.5px; line-height:1.8; color:var(--ink);
   }
   .char-count{ position:absolute; bottom:10px; left:14px; font-size:10.5px; color:var(--muted); }
@@ -69,7 +107,6 @@
     background:var(--p50); border:1px solid var(--p150); border-radius:999px;
     padding:8px 13px; font-size:11.5px; color:var(--p800); font-weight:700;
   }
-  .chip:active{ background:var(--p100); }
 
   .consent{
     display:flex; align-items:flex-start; gap:10px; margin-top:16px;
@@ -83,11 +120,8 @@
     background:linear-gradient(135deg, var(--p700), var(--p900)); color:#fff;
     font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; gap:8px;
     box-shadow: 0 12px 24px -10px rgba(44,20,88,.55);
-    transition: opacity .15s ease, transform .1s ease;
   }
   .send-btn:disabled{ opacity:.45; cursor:not-allowed; }
-  .send-btn:active:not(:disabled){ transform:scale(.98); }
-
   .status{ text-align:center; font-size:12px; color:var(--muted); min-height:16px; }
   .status.err{ color:#c0392b; }
 
@@ -108,12 +142,32 @@
     <span>أصدقاء قيمة</span>
   </div>
 
+  <div class="panel" id="waitPanel">
+    <div id="waitView">
+      <div class="wait-title" id="waitTitle">بانتظار دوران العجلة...</div>
+      <div class="wait-sub" id="waitSub">اطلبوا من أحد أن يدور العجلة على الشاشة</div>
+      <div class="pulse-dot" id="pulseDot"></div>
+
+      <div class="wheel-holder" id="wheelHolder">
+        <div class="wheel-shadow"></div>
+        <svg class="pointer" width="30" height="34" viewBox="0 0 34 40">
+          <path d="M17 40 L1 6 Q1 0 8 0 L26 0 Q33 0 33 6 Z" fill="#2c1458"/>
+          <path d="M17 34 L6 8 Q6 4 10 4 L24 4 Q28 4 28 8 Z" fill="#442182"/>
+          <circle cx="17" cy="9" r="4" fill="#c3b0e8"/>
+        </svg>
+        <div class="rim"></div>
+        <div class="wheel" id="wheel"><svg id="wheelSvg" viewBox="0 0 300 300"></svg></div>
+        <div class="wheel-gloss"></div>
+        <div class="wheel-hub">🎁</div>
+        <div class="confetti-layer" id="confetti"></div>
+      </div>
+    </div>
+  </div>
+
   <div id="formView">
     <div class="panel to-card" style="margin-bottom:16px;">
       <div class="to-label">رسالة تقدير إلى</div>
       <div class="to-name" id="toName">—</div>
-      <select class="to-select" id="toSelect" style="display:none; margin-top:10px;"></select>
-      <button class="to-swap" id="toSwapBtn" style="display:none;">تغيير الشخص</button>
     </div>
 
     <div class="panel compose">
@@ -146,43 +200,121 @@
     <div class="emoji">💜</div>
     <h2>تم إرسال رسالتك!</h2>
     <p>رسالتك بطريقها للظهور على الشاشة المشتركة. شكرًا لنشر الإيجابية اليوم.</p>
-    <button class="again" id="againBtn">إرسال رسالة لشخص آخر</button>
+    <button class="again" id="againBtn">بانتظار دورة جديدة</button>
   </div>
 </div>
 
 <script>
-/* Must match the SCRIPT_URL used in index.html */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0a8P8a26oIVvm9VMP5NyfwME5Excic0Oi7MynJopuLBm_9Bwhk0UhsNEv7lbVB3A7aQ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjirJDD-S9uLWJMem4EnjU0-h_BBfz8Pp_Aw1RkO0IY6T_dK-n2fjkLStAqHrg4ExmxQ/exec";
 const isConfigured = () => SCRIPT_URL && !SCRIPT_URL.includes("PASTE_YOUR");
 
 const NAMES = ["أحمد","سارة","محمد","نورة","خالد","ريم","فاطمة","ياسر","أمل","ماجد","هنوف","دانة"];
+const COLORS = ["#442182","#5a34a0","#442182","#6a3fb5","#442182","#5a34a0","#442182","#6a3fb5","#442182","#5a34a0","#442182","#6a3fb5"];
 
-const params = new URLSearchParams(location.search);
-let recipient = params.get('to') || "";
+const svg = document.getElementById('wheelSvg');
+const n = NAMES.length, cx=150, cy=150, r=148, startAngle=-90, slice=360/n;
+function polar(cx,cy,r,deg){ const a=deg*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; }
 
-const toNameEl = document.getElementById('toName');
-const toSelect = document.getElementById('toSelect');
-const toSwapBtn = document.getElementById('toSwapBtn');
-
-function renderRecipient(){
-  if(recipient){
-    toNameEl.textContent = recipient;
-    toNameEl.style.display = "block";
-    toSelect.style.display = "none";
-    toSwapBtn.style.display = "inline-block";
-    toSwapBtn.textContent = "تغيير الشخص";
-  } else {
-    toNameEl.style.display = "none";
-    toSelect.style.display = "block";
-    toSwapBtn.style.display = "none";
-    toSelect.innerHTML = `<option value="">اختر الشخص...</option>` +
-      NAMES.map(n => `<option value="${n}">${n}</option>`).join("");
-  }
-  updateSendState();
+let defs = `<defs>`;
+COLORS.forEach((c,i)=>{
+  defs += `<radialGradient id="seg${i}" cx="35%" cy="30%" r="80%">
+    <stop offset="0%" stop-color="${c}" stop-opacity=".55"/>
+    <stop offset="55%" stop-color="${c}"/>
+    <stop offset="100%" stop-color="#2c1458"/>
+  </radialGradient>`;
+});
+defs += `</defs>`;
+let markup = defs;
+for(let i=0;i<n;i++){
+  const a0=startAngle+i*slice, a1=a0+slice;
+  const [x0,y0]=polar(cx,cy,r,a0), [x1,y1]=polar(cx,cy,r,a1);
+  const large = slice>180?1:0;
+  const path = `M${cx},${cy} L${x0.toFixed(2)},${y0.toFixed(2)} A${r},${r} 0 ${large} 1 ${x1.toFixed(2)},${y1.toFixed(2)} Z`;
+  const mid=a0+slice/2;
+  const [tx,ty]=polar(cx,cy, r*0.63, mid);
+  markup += `<path d="${path}" fill="url(#seg${i})" stroke="#ffffff" stroke-width="2.5"/>`;
+  markup += `<text x="${tx.toFixed(2)}" y="${ty.toFixed(2)}" fill="#ffffff" font-size="14.5" font-weight="800" font-family="Tajawal, sans-serif" text-anchor="middle" dominant-baseline="middle" transform="rotate(${mid+90}, ${tx.toFixed(2)}, ${ty.toFixed(2)})" style="text-shadow:0 1px 2px rgba(0,0,0,.35)">${NAMES[i]}</text>`;
 }
-toSelect.addEventListener('change', () => { recipient = toSelect.value; updateSendState(); });
-toSwapBtn.addEventListener('click', () => { recipient = ""; renderRecipient(); });
-renderRecipient();
+svg.innerHTML = markup;
+
+const wheelEl = document.getElementById('wheel');
+let currentRotation = 0;
+
+function burstConfetti(){
+  const layer = document.getElementById('confetti');
+  layer.innerHTML = "";
+  const colors = ["#442182","#7048b8","#a68ddb","#c3b0e8","#5a34a0"];
+  for(let i=0;i<20;i++){
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    const isHeart = Math.random() < .35;
+    const size = 5 + Math.random()*5;
+    const color = colors[Math.floor(Math.random()*colors.length)];
+    el.style.left = "50%"; el.style.top = "50%";
+    el.style.width = size+"px"; el.style.height = size+"px";
+    if(isHeart){
+      el.innerHTML = `<svg width="${size*1.6}" height="${size*1.6}" viewBox="0 0 24 24" fill="${color}"><path d="M12 21s-7-4.5-9.5-9C.5 8.5 3 4 7 4c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 4 0 6.5 4.5 4.5 8-2.5 4.5-9.5 9-9.5 9z"/></svg>`;
+    } else {
+      el.style.background = color; el.style.borderRadius = "3px";
+    }
+    const angle = Math.random()*Math.PI*2;
+    const dist = 50 + Math.random()*70;
+    const dx = Math.cos(angle)*dist, dy = Math.sin(angle)*dist - 25;
+    const rot = (Math.random()*360)-180;
+    el.animate([
+      { transform:`translate(0,0) rotate(0deg)`, opacity:1 },
+      { transform:`translate(${dx}px, ${dy+100}px) rotate(${rot}deg)`, opacity:0 }
+    ], { duration: 1000 + Math.random()*400, easing:'cubic-bezier(.2,.7,.3,1)', fill:'forwards' });
+    layer.appendChild(el);
+  }
+  setTimeout(()=>{ layer.innerHTML=""; }, 1500);
+}
+
+function playSpin(personName){
+  const winnerIndex = NAMES.indexOf(personName);
+  if(winnerIndex === -1) return;
+  const sliceCenter = startAngle + winnerIndex*slice + slice/2;
+  const target = -90 - sliceCenter;
+  const spins = 6;
+  const finalRotation = currentRotation - (currentRotation % 360) + spins*360 + ((target % 360)+360)%360;
+  currentRotation = finalRotation;
+  wheelEl.style.transform = `rotate(${finalRotation}deg)`;
+  document.getElementById('waitTitle').textContent = "العجلة تدور...";
+  document.getElementById('waitSub').textContent = "خلوها توقف!";
+  document.getElementById('pulseDot').style.display = "none";
+
+  setTimeout(() => {
+    burstConfetti();
+    setTimeout(() => showCompose(personName), 500);
+  }, 5100);
+}
+
+function showCompose(personName){
+  document.getElementById('toName').textContent = personName;
+  document.getElementById('waitPanel').style.display = "none";
+  document.getElementById('formView').style.display = "flex";
+}
+
+let lastSeenTs = 0;
+let animating = false;
+async function pollSpin(){
+  if(!isConfigured() || animating) return;
+  try{
+    const res = await fetch(SCRIPT_URL + "?action=spin_get");
+    const data = await res.json();
+    if(data.to && data.ts && data.ts !== lastSeenTs){
+      lastSeenTs = data.ts;
+      animating = true;
+      playSpin(data.to);
+    }
+  }catch(err){ /* silent — retries next poll */ }
+}
+if(isConfigured()){
+  pollSpin();
+  setInterval(pollSpin, 1500);
+} else {
+  document.getElementById('waitSub').textContent = "الربط بقاعدة البيانات لسا ما تفعّل.";
+}
 
 const msgBody = document.getElementById('msgBody');
 const charCount = document.getElementById('charCount');
@@ -190,7 +322,6 @@ msgBody.addEventListener('input', () => {
   charCount.textContent = msgBody.value.length;
   updateSendState();
 });
-
 document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('click', () => {
     msgBody.value = chip.dataset.text + " ";
@@ -199,23 +330,17 @@ document.querySelectorAll('.chip').forEach(chip => {
     updateSendState();
   });
 });
-
 const consentBox = document.getElementById('consentBox');
 const sendBtn = document.getElementById('sendBtn');
 consentBox.addEventListener('change', updateSendState);
-
 function updateSendState(){
-  const ok = recipient && msgBody.value.trim().length >= 3 && consentBox.checked;
+  const ok = msgBody.value.trim().length >= 3 && consentBox.checked;
   sendBtn.disabled = !ok;
 }
 
 const statusMsg = document.getElementById('statusMsg');
 sendBtn.addEventListener('click', async () => {
-  if(!isConfigured()){
-    statusMsg.textContent = "الربط بقاعدة البيانات لسا ما تفعّل — تواصلي مع فريق الموارد البشرية.";
-    statusMsg.classList.add('err');
-    return;
-  }
+  const recipient = document.getElementById('toName').textContent;
   sendBtn.disabled = true;
   statusMsg.classList.remove('err');
   statusMsg.textContent = "جاري الإرسال...";
@@ -240,11 +365,14 @@ sendBtn.addEventListener('click', async () => {
 
 document.getElementById('againBtn').addEventListener('click', () => {
   msgBody.value = ""; charCount.textContent = "0"; consentBox.checked = false;
-  recipient = params.get('to') || "";
-  renderRecipient();
   document.getElementById('successView').style.display = "none";
-  document.getElementById('formView').style.display = "block";
+  document.getElementById('formView').style.display = "none";
+  document.getElementById('waitPanel').style.display = "block";
+  document.getElementById('waitTitle').textContent = "بانتظار دوران العجلة...";
+  document.getElementById('waitSub').textContent = "اطلبوا من أحد أن يدور العجلة على الشاشة";
+  document.getElementById('pulseDot').style.display = "block";
   statusMsg.textContent = "";
+  animating = false;
 });
 </script>
 </body>
