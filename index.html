@@ -1,4 +1,4 @@
-؛[<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -527,16 +527,19 @@ const n = NAMES.length, cx=150, cy=150, r=148, startAngle=-90, slice=360/n;
 function polar(cx,cy,r,deg){ const a=deg*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; }
 
 let defs = `<defs>`;
-COLORS.forEach((c,i)=>{
+for(let i=0;i<n;i++){
+  const c = COLORS[i % COLORS.length];
   defs += `<radialGradient id="seg${i}" cx="35%" cy="30%" r="80%">
     <stop offset="0%" stop-color="${c}" stop-opacity=".55"/>
     <stop offset="55%" stop-color="${c}"/>
     <stop offset="100%" stop-color="#2c1458"/>
   </radialGradient>`;
-});
+}
 defs += `</defs>`;
 
 let markup = defs;
+const availTang = 2 * (r*0.63) * Math.sin((slice/2) * Math.PI/180);
+const fontSize = Math.max(6, Math.min(14.5, availTang * 0.55));
 for(let i=0;i<n;i++){
   const a0=startAngle+i*slice, a1=a0+slice;
   const [x0,y0]=polar(cx,cy,r,a0), [x1,y1]=polar(cx,cy,r,a1);
@@ -545,7 +548,7 @@ for(let i=0;i<n;i++){
   const mid=a0+slice/2;
   const [tx,ty]=polar(cx,cy, r*0.63, mid);
   markup += `<path d="${path}" fill="url(#seg${i})" stroke="#ffffff" stroke-width="2.5"/>`;
-  markup += `<text x="${tx.toFixed(2)}" y="${ty.toFixed(2)}" fill="#ffffff" font-size="14.5" font-weight="800" font-family="Tajawal, sans-serif" text-anchor="middle" dominant-baseline="middle" transform="rotate(${mid+90}, ${tx.toFixed(2)}, ${ty.toFixed(2)})" style="text-shadow:0 1px 2px rgba(0,0,0,.35)">${NAMES[i]}</text>`;
+  markup += `<text x="${tx.toFixed(2)}" y="${ty.toFixed(2)}" fill="#ffffff" font-size="${fontSize.toFixed(1)}" font-weight="800" font-family="Tajawal, sans-serif" text-anchor="middle" dominant-baseline="middle" transform="rotate(${mid+90}, ${tx.toFixed(2)}, ${ty.toFixed(2)})" style="text-shadow:0 1px 2px rgba(0,0,0,.35)">${NAMES[i]}</text>`;
 }
 svg.innerHTML = markup;
 
