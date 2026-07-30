@@ -208,7 +208,7 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjirJDD-S9uLWJMem4EnjU0-h_BBfz8Pp_Aw1RkO0IY6T_dK-n2fjkLStAqHrg4ExmxQ/exec";
 const isConfigured = () => SCRIPT_URL && !SCRIPT_URL.includes("PASTE_YOUR");
 
-const NAMES = ["إبراهيم","وجدان","أثير","عبدالرحمن","محمود","رامي","عمر","عبير","صلاح الدين","علي","أسامة","ديما","فراج","ضي","محمد","أسامة","أحمد","نايف","سعد","عمر","مريم","مريم","عائشة","مرح","عبدالرحمن","عبدالرحمن","محمود","عبدالرحمن","آسيا","عبدالملك","عفراء","فاطمة","نورة","نورة","عفاف","أميرة"];
+const NAMES = ["إبراهيم النويبت","وجدان محمد","أثير القحطاني","عبدالرحمن المشخص","رامي البزر","عمر الكثيري","عبير الهديب","صلاح الدين ياسين","ديما الدمخ","محمد أبو دقة","أسامة حسن","أحمد عبدالحميد","نايف القحطاني","سعد المليحي","عمر المطيري","مريم الحسين","مريم الشمري","مرح العتيبي","عبدالرحمن الطمرة","عبدالرحمن المفدى","عبدالرحمن الصعنوني","آسيا الشريدة","عبدالملك أبو داهش","عفراء النفيسة","فاطمة العمري","نورة السديري","نورة الحماد"];
 const COLORS = ["#442182","#5a34a0","#442182","#6a3fb5","#442182","#5a34a0","#442182","#6a3fb5","#442182","#5a34a0","#442182","#6a3fb5"];
 
 const svg = document.getElementById('wheelSvg');
@@ -226,15 +226,19 @@ for(let i=0;i<n;i++){
 }
 defs += `</defs>`;
 let markup = defs;
-const availTang = 2 * (r*0.63) * Math.sin((slice/2) * Math.PI/180);
-const fontSize = Math.max(6, Math.min(14.5, availTang * 0.55));
+const textRadius = r*0.7;
+const availTang = 2 * textRadius * Math.sin((slice/2) * Math.PI/180);
+const longestNameLen = Math.max(...NAMES.map(nm => nm.length));
+const maxRadialWidth = r * 0.92;
+const fontSizeByLength = maxRadialWidth / (longestNameLen * 0.62);
+const fontSize = Math.max(7, Math.min(17, availTang * 0.75, fontSizeByLength));
 for(let i=0;i<n;i++){
   const a0=startAngle+i*slice, a1=a0+slice;
   const [x0,y0]=polar(cx,cy,r,a0), [x1,y1]=polar(cx,cy,r,a1);
   const large = slice>180?1:0;
   const path = `M${cx},${cy} L${x0.toFixed(2)},${y0.toFixed(2)} A${r},${r} 0 ${large} 1 ${x1.toFixed(2)},${y1.toFixed(2)} Z`;
   const mid=a0+slice/2;
-  const [tx,ty]=polar(cx,cy, r*0.63, mid);
+  const [tx,ty]=polar(cx,cy, textRadius, mid);
   markup += `<path d="${path}" fill="url(#seg${i})" stroke="#ffffff" stroke-width="2.5"/>`;
   markup += `<text x="${tx.toFixed(2)}" y="${ty.toFixed(2)}" fill="#ffffff" font-size="${fontSize.toFixed(1)}" font-weight="800" font-family="Tajawal, sans-serif" text-anchor="middle" dominant-baseline="middle" transform="rotate(${mid+90}, ${tx.toFixed(2)}, ${ty.toFixed(2)})" style="text-shadow:0 1px 2px rgba(0,0,0,.35)">${NAMES[i]}</text>`;
 }
